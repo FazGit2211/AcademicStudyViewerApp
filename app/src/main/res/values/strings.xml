@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AcademicStudyViewerApp</string>
+    <string name="titleMainActivity">MainActivity</string>
+    <string name="titlePrefsActivity">PreferencesActivity</string>
+</resources>
