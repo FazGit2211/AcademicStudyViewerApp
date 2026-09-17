@@ -1,64 +1,78 @@
 package com.fzuleta.academicstudyviewerapp;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fzuleta.academicstudyviewerapp.db.DbAdapter;
 import com.fzuleta.academicstudyviewerapp.models.Career;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
+public class MainActivity extends Activity implements View.OnClickListener {
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_add) {
+            startActivity(new Intent(this, CareerActivity.class));
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //recyclerView = findViewById(R.id.recView);
+        RecyclerView recyclerView = findViewById(R.id.recView);
+        MaterialButton btnAdd = findViewById(R.id.btn_add);
+        btnAdd.setOnClickListener(this);
+
+
         /*
-         *Will be Get from database
+         *Instance dbAdapter for create a database and get records
          */
-        ArrayList<Career> carrers = new ArrayList<>();
-        carrers.add(new Career("APU", 3));
-        carrers.add(new Career("Lic. Informática", 5));
-        carrers.add(new Career("Ingenieria en Sistemas", 5));
-        carrers.add(new Career("Lic. Sistemas", 5));
-        /*
-         * Instance object adapter and set collection
-         * */
-        CareerRecViewAdapter adapter = new CareerRecViewAdapter();
-        adapter.setCareers(carrers);
-        /*
-         * Set UI recycler view adapter instance
-         * */
-        //recyclerView.setAdapter(adapter);
-        /*
-         * Set LayoutManager to recycler view
-         * */
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DbAdapter dbAdapter = new DbAdapter(this);
+        loadCareers(recyclerView, dbAdapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.itemPrefs){
-            startActivity(new Intent(this, PrefsActivity.class));
-            return true;
+    private void loadCareers(RecyclerView recyclerView, DbAdapter dbAdapter) throws SQLException {
+        try {
+            dbAdapter.open();
+            Cursor cursor = dbAdapter.getAllCareers();
+            ArrayList<Career> careers = new ArrayList<>();
+            if (cursor.moveToFirst()) {
+                do {
+                    Career career = new Career(cursor.getString(1), Integer.parseInt(cursor.getString(2)));
+                    careers.add(career);
+                } while (cursor.moveToNext());
+                /*
+                 * Instance object adapter and set collection
+                 * */
+                CareerRecViewAdapter adapter = new CareerRecViewAdapter();
+                adapter.setCareers(careers);      /*
+                 * Set UI recycler view adapter instance
+                 * */
+                recyclerView.setAdapter(adapter);
+                /*
+                 * Set LayoutManager to recycler view
+                 * */
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            } else {
+                Toast.makeText(this, "Empty careers", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            dbAdapter.close();
         }
-        return false;
     }
+
 }

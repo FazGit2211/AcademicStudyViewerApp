@@ -3,5 +3,5 @@
     <item
         android:id="@+id/itemPrefs"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="@string/titlePrefsActivity"></item>
+        android:title="@string/titleMenuItemOne"/>
 </menu>
