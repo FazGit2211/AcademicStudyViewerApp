@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">AcademicStudyViewerApp</string>
     <string name="titleMainActivity">MainActivity</string>
-    <string name="titleMenuItemOne">Nuevo</string>
-    <string name="titleCareerActivity">Carreras</string>
-    <string name="notContent">No hay carreras creadas.</string>
-    <string name="txtNewCareer">Crear una nueva carrera</string>
-    <string name="txtNameCareer">Nombre:</string>
-    <string name="txtDurationCareer">Duración:</string>
-    <string name="btnSave">Guardar</string>
-    <string name="btnCancel">Cancelar</string>
+    <string name="titleMenuItemOne">New</string>
+    <string name="titleCareerActivity">Carees</string>
+    <string name="notContent">Not Content.</string>
+    <string name="txtNewCareer">Create a new career</string>
+    <string name="txtNameCareer">Name:</string>
+    <string name="txtDurationCareer">Duration:</string>
+    <string name="btnSave">Save</string>
+    <string name="btnCancel">Cancel</string>
 </resources>

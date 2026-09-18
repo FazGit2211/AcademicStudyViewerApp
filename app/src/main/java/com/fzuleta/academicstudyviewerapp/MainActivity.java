@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fzuleta.academicstudyviewerapp.db.DbAdapter;
 import com.fzuleta.academicstudyviewerapp.models.Career;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = findViewById(R.id.recView);
-        MaterialButton btnAdd = findViewById(R.id.btn_add);
+        FloatingActionButton btnAdd = findViewById(R.id.btn_add);
         btnAdd.setOnClickListener(this);
 
 
@@ -65,8 +66,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                  * Set LayoutManager to recycler view
                  * */
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            } else {
-                Toast.makeText(this, "Empty careers", Toast.LENGTH_LONG).show();
+                recyclerView.setVisibility(View.VISIBLE);
             }
         } catch (Exception exception) {
             exception.printStackTrace();
